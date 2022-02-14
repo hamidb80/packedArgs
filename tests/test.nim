@@ -1,17 +1,16 @@
 import std/[unittest, macros]
 import packedArgs
 
-proc myProc*(a, b, c = 1,
-  d: string = "--", e: bool = false): string {.packedArgs.} =
 
-  $a & $b & $c & d & $e
+proc myProc(a, b = 1, c: bool): string {.packedArgs.} =
+  $a & $b & $c
+
+proc myGeneric[A, B](a: A, b: B): string {.packedArgs.} =
+  $a & $b
 
 
-test "all args provided":
-  check myProc(1, 2, 3, "no", true) == myProcPacked(toMyProcArgs(1, 2, 3, "no", true))
+test "normal":
+  check myProc(1, 2, true) == myProcPacked(toMyProcArgs(1, 2, true))
 
-test "partial args":
-  check myProc(1, 2, 3) == myProcPacked(toMyProcArgs(1, 2, 3))
-
-test "named args":
-  check myProc(b = 2, e = true) == myProcPacked(toMyProcArgs(b = 2, e = true))
+test "generic":
+  check myGeneric(0.3, true) == myGenericPacked(tomyGenericArgs(0.3, true))

@@ -10,4 +10,4 @@ srcDir        = "src"
 # Dependencies
 
 requires "nim >= 1.6.2"
-requires "macroplus >= 0.1.19"
+requires "macroplus >= 0.1.20"

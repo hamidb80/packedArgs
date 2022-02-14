@@ -15,28 +15,31 @@ this library aims to eliminite this limitation via `packedArgs` macro.
 
 Image you have a proc named `myProc` like this and you apply `packedArgs` to it:
 ```nim
-proc myProc(a, b, c: int = 1, d: string = ""): string {.packedArgs.} =
+proc myProc(a, b = 1; c: bool): string {.packedArgs.} =
   ...
 ```
 
-**the generated code gonna be:**
+**the generated code will be:**
 ```nim
-proc myProc(a, b, c: int = 1, d: string = ""): string =
+proc myProc(a, b = 1; c: bool): string =
   ...
 
-type MyProcArgs = tuple[a, b, c: int, d: string]
+type MyProcArgs = tuple[a, b: typeof 1, c: bool]
 
-proc toMyProcArgs(a, b, c: int = 1, d: string = ""): MyProcArgs =
-  (a, b, c, d, e)
+proc toMyProcArgs(a, b = 1; c: bool): MyProcArgs =
+  (a, b, c)
 
 proc myProcPacked(args: MyProcArgs): string =
-  myProc(args.a, args.b, args.c, args.d, args.e)
+  myProc(args.a, args.b, args.c)
 ```
 
->>>> note on exported <<<<
+**usage**:
+```nim
+myProcPacked(toMyProcArgs(1, 2, true)) # same as myProc(1, 2, true)
+```
 
 Sweet! right?
 
 ## Features
-* [x] export
-* [ ] generics 
+* [x] **export**: if the proc exported itself, the generated `type`/`proc`s are exported too
+* [x] **generics**: nothing new, see `tests`/`test.nim` to make sure
