@@ -22,11 +22,11 @@ func toGenericIdent(id: NimNode, genericParams: NimNode): NimNode =
     newTree(nnkBracketExpr, id).add:
       listIdentsInIdentDefs genericParams.toseq
 
-func packedArgsImpl(routineDef: NimNode): NimNode =
+func packedArgsImpl(routineDef: NimNode, forceExport: bool): NimNode =
   let
     n = routineDef[RoutineName]
     genericParams = routineDef[RoutineGenericParams]
-    shouldExport = isExportedIdent n
+    shouldExport = forceExport or isExportedIdent n
     routineName = getIdentName n
 
   var tupleFieldsGroup: seq[NimNode]
@@ -80,14 +80,39 @@ func packedArgsImpl(routineDef: NimNode): NimNode =
   toPackedArgsDef[RoutineGenericParams] = genericParams
 
   return quote:
-    `routineDef`
     `argsTupleDef`
     `toPackedArgsDef`
     `packedArgsProcDef`
 
 macro packedArgs*(routineDef) =
   expectKind routineDef, {nnkProcDef, nnkFuncDef}
-  result = packedArgsImpl(routineDef)
+  let heplers = packedArgsImpl(routineDef, false)
+
+  result = quote:
+    `routineDef`
+    `heplers`
+
+  # echo repr result
+  # echo treeRepr result
+
+macro genPackedArgsFor*(routineIdent: typed, exported: static[bool]): untyped =
+  var routineDef = copy getImpl routineIdent
+
+  # convert Sym to Ident
+  for i in 1 ..< routineDef[RoutineFormalParams].len:
+    var ra = routineDef[RoutineFormalParams][i]
+    for ia in 0..(ra.len - 3):
+      if ra[ia].kind == nnkSym:
+        ra[ia] = ident ra[ia].strVal
+
+  # make generic params format valid + convert Sym to Ident
+  if routineDef[RoutineGenericParams].kind != nnkEmpty:
+    for i in 0..<routineDef[RoutineGenericParams].len:
+      routineDef[RoutineGenericParams][i] = newIdentDefs(
+        ident routineDef[RoutineGenericParams][i].strval,
+        newEmptyNode())
+
+  result = packedArgsImpl(routineDef, exported)
 
   # echo repr result
   # echo treeRepr result

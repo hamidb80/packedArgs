@@ -38,6 +38,18 @@ proc myProcPacked(args: MyProcArgs): string =
 myProcPacked(toMyProcArgs(1, 2, true)) # same as myProc(1, 2, true)
 ```
 
+or there is macro `genPackedArgsFor` to use after routine declaration.
+```nim
+macro genPackedArgsFor(routineIdent: typed, exported: static[bool]): untyped
+```
+**usage**:
+```nim
+proc work(something: bool): float = discard
+genPackedArgsFor(work, true)
+```
+
+Becuase this is a little trickier, use `unpackArgs` when is possible.
+
 Sweet! right?
 
 ## Features
