@@ -7,8 +7,8 @@
 > the problem is that spawn can block and programms that use channels usually assume that it cannot block :: [Araq on discord channel](https://discord.com/channels/371759389889003530/371759389889003532/814439926380494878)
 >
 
-So this brings us to use [`createThread`](https://nim-lang.org/docs/threads.html#createThread%2CThread%5Bvoid%5D%2Cproc%29).
-But the bad thing about `createThread` is that you can't pass multiply arguments when you create a thread. you have to pack the arguments inside a `tuple`/`object`, ... and then pass it.
+So this brings us to [`createThread`](https://nim-lang.org/docs/threads.html#createThread%2CThread%5Bvoid%5D%2Cproc%29).
+But the bad thing about `createThread` is that you can't pass multiply arguments for your `proc`. you have to pack them (arguments) inside a `tuple`/`object`, ... and then pass it.
 
 ## The Solution
 this library aims to eliminite this limitation via `packedArgs` macro.
