@@ -2,7 +2,7 @@
 
 version       = "0.0.1"
 author        = "hamidb80"
-description   = "a convenstion mainly created for createThread proc"
+description   = "a convention mainly created for `createThread` proc"
 license       = "MIT"
 srcDir        = "src"
 
