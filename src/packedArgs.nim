@@ -88,5 +88,6 @@ func packedArgsImpl(routineDef: NimNode): NimNode =
 macro packedArgs*(routineDef) =
   expectKind routineDef, {nnkProcDef, nnkFuncDef}
   result = packedArgsImpl(routineDef)
-  echo repr result
+
+  # echo repr result
   # echo treeRepr result

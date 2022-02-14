@@ -1,13 +1,11 @@
 import std/[unittest, macros]
 import packedArgs
 
-
 proc myProc(a, b = 1, c: bool): string {.packedArgs.} =
   $a & $b & $c
 
-proc myGeneric[A, B](a: A, b: B): string {.packedArgs.} =
+proc myGeneric*[A, B](a: A, b: B): string {.packedArgs.} =
   $a & $b
-
 
 test "normal":
   check myProc(1, 2, true) == myProcPacked(toMyProcArgs(1, 2, true))
