@@ -1,6 +1,6 @@
 # packedArgs!
 
-## the problem
+## The Problem
 > Note: Channels are designed for the Thread type. They are unstable when used with spawn
 :: [Nim doc for channles](https://nim-lang.org/docs/channels_builtin.html)
 
@@ -10,10 +10,10 @@
 So this brings us to use [`createThread`](https://nim-lang.org/docs/threads.html#createThread%2CThread%5Bvoid%5D%2Cproc%29).
 But the bad thing about `createThread` is that you can't pass multiply arguments when you create a thread. you have to pack the arguments inside a `tuple`/`object`, ... and then pass it.
 
-## the workaround
+## The Solution
 this library aims to eliminite this limitation via `packedArgs` macro.
 
-Image you have a proc named `myProc` like this and you apply `packedArgs` to it:
+Assume you have a proc named `myProc` like this and you apply `packedArgs` to it:
 ```nim
 proc myProc(a, b = 1; c: bool): string {.packedArgs.} =
   ...
