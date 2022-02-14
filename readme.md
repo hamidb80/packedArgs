@@ -48,9 +48,8 @@ proc work(something: bool): float = discard
 genPackedArgsFor(work, true)
 ```
 
-Becuase this is a little trickier, use `unpackArgs` when is possible.
+Becuase this is a little trickier, use `unpackArgs` when it's possible.
 
-Sweet! right?
 
 ## Features
 * [x] **export**: if the proc exported itself, the generated `type`/`proc`s are exported too
