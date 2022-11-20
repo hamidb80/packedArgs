@@ -11,7 +11,7 @@ So this brings us to [`createThread`](https://nim-lang.org/docs/threads.html#cre
 But the bad thing about `createThread` is that you can't pass multiply arguments for your `proc`. you have to pack them (arguments) inside a `tuple`/`object`, ... and then pass it.
 
 ## The Solution
-this library aims to eliminite this limitation via `packedArgs` macro.
+this library aims to eliminite this limitation via `packedArgs` macro. this macro creates a duplicated proc that has packed parameters [as a `tuple`].
 
 Assume you have a proc named `myProc` like this and you apply `packedArgs` to it:
 ```nim
